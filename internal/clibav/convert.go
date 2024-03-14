@@ -6,6 +6,12 @@ package clibav
 import "C"
 import "unsafe"
 
+func init() {
+	if rc := C.init_convert(); rc < 0 {
+		panic("unable to initialize clibav")
+	}
+}
+
 func Convert(input, output string) error {
 	var (
 		c       C.struct_convert

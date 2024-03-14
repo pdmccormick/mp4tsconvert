@@ -3,6 +3,18 @@
 
 #include "convert.h"
 
+static AVOutputFormat *mpegts_output_format;
+
+int init_convert()
+{
+    mpegts_output_format = av_guess_format("mpegts", NULL, NULL);
+    if (mpegts_output_format == NULL) {
+        return -1;
+    }
+
+    return 0;
+}
+
 int convert_open(struct convert *c, char *inFilename, char *outFilename)
 {
     int rc = 0;
@@ -15,7 +27,7 @@ int convert_open(struct convert *c, char *inFilename, char *outFilename)
         goto _err;
     }
 
-    if ((rc = avformat_alloc_output_context2(&c->outFmtCtx, NULL, "mpegts", outFilename)) < 0) {
+    if ((rc = avformat_alloc_output_context2(&c->outFmtCtx, mpegts_output_format, NULL, NULL)) < 0) {
         goto _err;
     }
 

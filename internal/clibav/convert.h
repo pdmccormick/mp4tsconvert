@@ -9,6 +9,7 @@ struct convert {
     AVOutputFormat      *outFmt;
 };
 
+int init_convert(void);
 int convert_open(struct convert *c, char *inFilename, char *outFilename);
 int convert_process_all(struct convert *c);
 int convert_close(struct convert *c);
