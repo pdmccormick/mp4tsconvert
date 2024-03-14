@@ -4,12 +4,17 @@ package clibav
 // #include <stdlib.h>
 // #include "convert.h"
 import "C"
-import "unsafe"
+import (
+	"errors"
+	"unsafe"
+)
 
-func init() {
+func Init() error {
 	if rc := C.init_convert(); rc < 0 {
-		panic("unable to initialize clibav")
+		return errors.New("unable to initialize clibav")
 	}
+
+	return nil
 }
 
 func Convert(input, output string) error {

@@ -2,8 +2,15 @@ package main
 
 import (
 	"flag"
+	"log"
+	"time"
 
 	"mp4tsconvert/internal/clibav"
+)
+
+var (
+	logf   = log.Printf
+	fatalf = log.Fatalf
 )
 
 func main() {
@@ -14,7 +21,32 @@ func main() {
 
 	flag.Parse()
 
-	if err := clibav.Convert(*inFlag, *outFlag); err != nil {
-		panic(err)
+	var (
+		input  = *inFlag
+		output = *outFlag
+	)
+
+	if input == "" {
+		fatalf("missing `-i` input file")
 	}
+
+	if output == "" {
+		fatalf("missing `-o` input file")
+	}
+
+	if err := clibav.Init(); err != nil {
+		fatalf("clibav: %s", err)
+	}
+
+	logf("reading from %s", input)
+
+	var start = time.Now()
+
+	if err := clibav.Convert(input, output); err != nil {
+		fatalf("convert: %s", err)
+	}
+
+	var dur = time.Since(start)
+
+	logf("took %s to write %s", dur.Truncate(1*time.Millisecond), output)
 }
