@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"time"
 
@@ -40,6 +41,8 @@ func main() {
 
 	logf("reading from %s", input)
 
+	fmt.Println("")
+
 	var start = time.Now()
 
 	if err := clibav.Convert(input, output); err != nil {
@@ -47,6 +50,8 @@ func main() {
 	}
 
 	var dur = time.Since(start)
+
+	fmt.Println("")
 
 	logf("took %s to write %s", dur.Truncate(1*time.Millisecond), output)
 }
