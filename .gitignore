@@ -1,0 +1,6 @@
+/ffmpeg/
+
+/mp4tsconvert
+
+*.mp4
+*.ts

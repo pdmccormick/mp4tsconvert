@@ -1,0 +1,8 @@
+libdir=${ffmpeg_path}/libavutil
+includedir=${ffmpeg_path}
+
+Name: libavutil
+Description:
+Version: dev
+Libs: -L${libdir} -lavutil -lm
+Cflags: -I${includedir}

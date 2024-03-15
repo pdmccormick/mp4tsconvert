@@ -1,0 +1,8 @@
+libdir=${ffmpeg_path}/libavformat
+includedir=${ffmpeg_path}
+
+Name: libavformat
+Description:
+Version: dev
+Libs: -L${libdir} -lavformat -lavcodec
+Cflags: -I${includedir}
