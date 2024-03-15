@@ -1,4 +1,5 @@
 #include <stddef.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 #include <sys/types.h>
@@ -22,7 +23,7 @@ static int convert_input_read(void *opaque, uint8_t *buf, int buf_size);
 static const AVInputFormat *mp4bmff_input_format;
 static const AVOutputFormat *mpegts_output_format;
 
-int convert_init()
+int convert_init(void)
 {
     mp4bmff_input_format = av_find_input_format("mov,mp4,m4a,3gp,3g2,mj2");
     if (mp4bmff_input_format == NULL) {
@@ -34,10 +35,12 @@ int convert_init()
         return -1;
     }
 
-    // av_log_set_level(AV_LOG_DEBUG);
-    av_log_set_level(AV_LOG_INFO);
-
     return 0;
+}
+
+void convert_set_logging(enum convert_loglevel level)
+{
+    av_log_set_level(level);
 }
 
 char *convert_err2str(int errnum)

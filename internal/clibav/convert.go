@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 	"unsafe"
 )
 
@@ -34,6 +35,43 @@ func toError(rc C.int) error {
 	}
 
 	return errors.New(s)
+}
+
+var str2loglevel = map[string]C.enum_convert_loglevel{
+	"quiet":   C.CONVERT_LOG_QUIET,
+	"panic":   C.CONVERT_LOG_PANIC,
+	"fatal":   C.CONVERT_LOG_FATAL,
+	"error":   C.CONVERT_LOG_ERROR,
+	"warning": C.CONVERT_LOG_WARNING,
+	"info":    C.CONVERT_LOG_INFO,
+	"verbose": C.CONVERT_LOG_VERBOSE,
+	"debug":   C.CONVERT_LOG_DEBUG,
+}
+
+var loglevels []string = getLevels()
+
+func getLevels() []string {
+	var (
+		keys = make([]string, len(str2loglevel))
+		i    = 0
+	)
+
+	for key, _ := range str2loglevel {
+		keys[i] = key
+		i++
+	}
+
+	return keys
+}
+
+func SetLogLevel(level string) error {
+	v, ok := str2loglevel[level]
+	if !ok {
+		return fmt.Errorf("unknown level `%s`, available options are: %s", level, strings.Join(loglevels, ", "))
+	}
+
+	C.convert_set_logging(v)
+	return nil
 }
 
 func Convert(input, output string) error {

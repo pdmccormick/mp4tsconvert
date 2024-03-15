@@ -16,8 +16,9 @@ var (
 
 func main() {
 	var (
-		inFlag  = flag.String("i", "", "input `filename`")
-		outFlag = flag.String("o", "", "output `filename`")
+		inFlag       = flag.String("i", "", "input `filename`")
+		outFlag      = flag.String("o", "", "output `filename`")
+		loglevelFlag = flag.String("loglevel", "", "set libav logging level")
 	)
 
 	flag.Parse()
@@ -37,6 +38,12 @@ func main() {
 
 	if err := clibav.Init(); err != nil {
 		fatalf("clibav: %s", err)
+	}
+
+	if v := *loglevelFlag; v != "" {
+		if err := clibav.SetLogLevel(v); err != nil {
+			fatalf("unable to set libav logging: %s", err)
+		}
 	}
 
 	logf("reading from %s", input)
