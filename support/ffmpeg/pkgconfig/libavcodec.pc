@@ -1,5 +1,5 @@
-libdir=${ffmpeg_path}/libavcodec
-includedir=${ffmpeg_path}
+libdir=${ffmpeg_path}/lib
+includedir=${ffmpeg_path}/include
 
 Name: libavcodec
 Description:
